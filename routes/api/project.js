@@ -86,7 +86,7 @@ router.post(
               newProject.workorder = hash;
               newProject
                 .save()
-                .then(user => res.json(user))
+                .then(project => res.json(project))
                 .catch(err => res.status(404).json(err));
             });
           });

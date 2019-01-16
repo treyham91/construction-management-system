@@ -12,46 +12,49 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  type: [
-    {
-      roofing: {
-        type: Boolean
-      },
+  type: {
+    roofing: {
+      type: Boolean
+    },
 
-      siding: {
-        type: Boolean
-      },
+    siding: {
+      type: Boolean
+    },
 
-      electric: {
-        type: Boolean
-      },
+    electric: {
+      type: Boolean
+    },
 
-      plumbing: {
-        type: Boolean
-      },
+    plumbing: {
+      type: Boolean
+    },
 
-      hvac: {
-        type: Boolean
-      },
+    hvac: {
+      type: Boolean
+    },
 
-      general: {
-        type: Boolean
-      },
+    general: {
+      type: Boolean
+    },
 
-      other: {
-        type: Boolean
-      }
+    other: {
+      type: Boolean
     }
-  ],
+  },
 
   esimatedcost: {
     type: Number,
     required: true
   },
 
+  workorder: {
+    type: Number,
+    required: true
+  },
+
   customer: {
     type: Schema.Types.ObjectId,
-    ref: "customers"
+    ref: "customer"
   },
 
   projectstartdate: {

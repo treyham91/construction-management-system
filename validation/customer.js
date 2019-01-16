@@ -11,4 +11,5 @@ module.exports = function validateCustomerInput(data) {
   data.city = !isEmpty(data.city) ? data.city : "";
   data.state = !isEmpty(data.state) ? data.state : "";
   data.zip = !isEmpty(data.zip) ? data.zip : "";
+  data.workorder = !isEmpty(data.workorder) ? data.workorder : "";
 };

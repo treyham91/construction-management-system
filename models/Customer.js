@@ -39,6 +39,11 @@ const CustomerSchema = new Schema({
     }
   },
 
+  workorder: {
+    type: Number,
+    required: true
+  },
+
   date: {
     type: String,
     required: true,

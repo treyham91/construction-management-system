@@ -10,10 +10,10 @@ const validateProjectInput = require("../../validation/projects");
 
 // Load Models
 const Project = require("../../models/Project");
-const Customer = require("../../models/customer");
+//const Customer = require("../../models/customer");
 
 // Test Project route
-router.get("/", (req, res) => res.json({ msg: "Project router works" }));
+//router.get("/", (req, res) => res.json({ msg: "Project router works" }));
 
 // @route   GET api/project/
 // @desc    Gets all projects
@@ -71,7 +71,7 @@ router.post(
           const newProject = new Project({
             name: req.body.name,
             type: projectTypes,
-            workorder: req.bodyworkorder,
+            workorder: req.body.workorder,
             esimatedcost: req.body.estimatedcost,
             projectstartdate: req.body.projectstartdate,
             estimatedprojectenddate: req.body.estimatedprojectenddate

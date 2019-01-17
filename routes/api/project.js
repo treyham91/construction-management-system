@@ -13,7 +13,7 @@ const Project = require("../../models/Project");
 //const Customer = require("../../models/customer");
 
 // Test Project route
-//router.get("/", (req, res) => res.json({ msg: "Project router works" }));
+router.get("/test", (req, res) => res.json({ msg: "Project router works" }));
 
 // @route   GET api/project/
 // @desc    Gets all projects
@@ -52,7 +52,8 @@ router.post(
       // Look for existing projects with the same work order
       // We won't default to editing an existing project, we will
       // create another route to handle updating projects
-      Project.findOne({ workorder: req.body.workorder }).then(project => {
+      const workorder = req.body.workorder;
+      Project.findOne({ workorder: workorder }).then(project => {
         if (project) {
           errors.exists = `A project with ${req.body.workorder} already exists`;
           return res.status(404).json(errors);
@@ -71,7 +72,7 @@ router.post(
           const newProject = new Project({
             name: req.body.name,
             type: projectTypes,
-            workorder: req.body.workorder,
+            workorder: workorder,
             esimatedcost: req.body.estimatedcost,
             projectstartdate: req.body.projectstartdate,
             estimatedprojectenddate: req.body.estimatedprojectenddate

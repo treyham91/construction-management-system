@@ -87,6 +87,31 @@ router.post(
   }
 );
 
+// @route   POST api/project/update
+// @desc    Updates project
+// @access  Private
+router.post(
+  "/update",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Project.findByIdAndUpdate({ _id: req.project.id }).then(
+      async updatedProject => {
+        Project.findById({ _id: req.project.id }).then(project => {
+          if (!project) {
+            errors.cannotupdate = "Cannot update project";
+            return res.status(400).json(errors);
+          } else {
+            await updatedProject
+              .save()
+              .then(updatedProject => res.json(updatedProject));
+          }
+        });
+      }
+    );
+  }
+);
 // @route   DELETE api/project/delete
 // @desc    Delete a project
 // @access  Private

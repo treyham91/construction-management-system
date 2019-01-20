@@ -14,7 +14,6 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <h1>My React App</h1>
           <Navbar />
           <Route exact path="/" component={Landing} />
           <div className="container">

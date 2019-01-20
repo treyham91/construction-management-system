@@ -5,7 +5,6 @@ module.exports = function validateProjectInput(data) {
   let errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : "";
-  data.type = !isEmpty(data.type) ? data.type : "";
   data.estimatedcost = !isEmpty(data.estimatedcost) ? data.estimatedcost : "";
   data.projectstartdate = !isEmpty(data.projectstartdate)
     ? data.projectstartdate
@@ -13,14 +12,10 @@ module.exports = function validateProjectInput(data) {
   data.estimatedprojectenddate = !isEmpty(data.estimatedprojectenddate)
     ? data.estimatedprojectenddate
     : "";
-  data.workorder = !isEmpty(data.workorder);
+  data.workorder = !isEmpty(data.workorder) ? data.workorder : "";
 
   if (Validator.isEmpty(data.name)) {
     errors.name = "Name field is required";
-  }
-
-  if (Validator.isEmpty(data.type)) {
-    errors.type = "Project type field is required";
   }
 
   if (Validator.isEmpty(data.estimatedcost)) {

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 export default class Register extends Component {
   constructor(props) {
@@ -9,21 +10,39 @@ export default class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      error: {}
+      errors: {}
     };
 
-    this.onChange = this.onChange.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  onSubmit = event => {
+    event.preventDefault();
+
+    const newUser = {
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    axios
+      .post("/api/users/register", newUser)
+      .then(res => console.log(res.data))
+      .catch(err => this.setState({ errors: err.response.data }));
+  };
+
   render() {
     return (
       <div>
         <h1>Register</h1>
-        <form action="/action_page.php">
+        <form onSubmit={this.onSubmit}>
           First Name:
           <br />
           <input

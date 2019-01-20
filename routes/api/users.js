@@ -33,8 +33,8 @@ router.post("/register", (req, res) => {
       return res.status(400).json({ email: "Email already exists" });
     } else {
       const newUser = new User({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
         password: req.body.password
       });
@@ -77,8 +77,8 @@ router.post("/login", (req, res) => {
     // Create our payload object
     const payload = {
       id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name
+      firstname: user.firstname,
+      lastname: user.lastname
     };
 
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -109,8 +109,8 @@ router.get(
   (req, res) => {
     res.json({
       id: req.user.id,
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
+      firstname: req.user.firstname,
+      lastname: req.user.lastname,
       email: req.user.email
     });
   }

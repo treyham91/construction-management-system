@@ -90,12 +90,16 @@ router.post(
 // @route   DELETE api/project/delete
 // @desc    Delete a project
 // @access  Private
-router.delete("/delete", (res, req) => {
-  const errors = {};
+router.delete(
+  "/delete",
+  passport.authenticate("jwt", { session: false }),
+  (res, req) => {
+    const errors = {};
 
-  Project.findOneAndRemove({ _id: req.project.id }).then(async () => {
-    await res.json({ success: "Project successfully deleted" });
-  });
-});
+    Project.findOneAndRemove({ _id: req.project.id }).then(async () => {
+      await res.json({ success: "Project successfully deleted" });
+    });
+  }
+);
 
 module.exports = router;

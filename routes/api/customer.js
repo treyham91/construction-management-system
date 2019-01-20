@@ -55,4 +55,45 @@ router.get(
       );
   }
 );
+
+// @route   POST api/customer/create
+// @desc    Creates a new customer
+// @access  Private
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateProjectInput(req.body);
+
+    if (!isValid) {
+      return res.status(404).json(errors);
+    } else {
+      // Look for existing customers
+      // We won't default to editing an existing customer, we will
+      // create another route to handle updating customers
+      const email = req.body.email;
+      Customer.findOne({ email: email }).then(customer => {
+        if (customer) {
+          errors.exists = `A customer with ${req.body.email} already exists`;
+          return res.status(404).json(errors);
+        } else {
+          const newCustomer = new Customer({
+            firstname: req.user.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            address: req.body.address,
+            city: req.body.city,
+            state: req.body.state,
+            zip: req.body.zip
+          });
+          newCustomer
+            .save()
+            .then(customer => res.json(customer))
+            .catch(err => res.status(404).json(err));
+        }
+      });
+    }
+  }
+);
+
 module.exports = router;

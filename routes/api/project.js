@@ -17,25 +17,24 @@ router.get("/test", (req, res) => res.json({ msg: "Project router works" }));
 
 // @route   GET api/project/
 // @desc    Gets all projects
-// @access  Public
-router.get("/", (req, res) => {
-  // Create an error object to hold error messages
-  const errors = {};
+// @access  Private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    // Create an error object to hold error messages
+    const errors = {};
 
-  Project.find(projects => {
-    if (!projects) {
-      errors.noprojects = "No projects found";
-      return res.status(404).json(errors);
-    } else {
-      res.json({
-        name: req.projects.name,
-        customer: req.projects.customer,
-        projectstartdate: req.projects.projectstartdate,
-        estimatedprojectenddate: req.projects.estimatedprojectenddate
-      });
-    }
-  });
-});
+    Project.find().then(projects => {
+      if (!projects) {
+        errors.noprojects = "No projects found";
+        return res.status(404).json(errors);
+      } else {
+        res.json(projects);
+      }
+    });
+  }
+);
 
 // @route   POST api/project/create
 // @desc    Creates a new project
@@ -44,7 +43,7 @@ router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, isValid } = validateProjectInput(req.data);
+    const { errors, isValid } = validateProjectInput(req.body);
 
     if (!isValid) {
       return res.status(404).json(errors);
@@ -70,6 +69,7 @@ router.post(
           if (req.body.other) projectTypes.other = req.body.other;
 
           const newProject = new Project({
+            user: req.user.id,
             name: req.body.name,
             type: projectTypes,
             workorder: workorder,
@@ -77,23 +77,53 @@ router.post(
             projectstartdate: req.body.projectstartdate,
             estimatedprojectenddate: req.body.estimatedprojectenddate
           });
-
-          // Just for security purposes, we will hash the workorder
-          // numbers so customer information linked to this number
-          // will be better protected
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newProject.workorder, salt, (err, hash) => {
-              if (err) throw err;
-              newProject.workorder = hash;
-              newProject
-                .save()
-                .then(project => res.json(project))
-                .catch(err => res.status(404).json(err));
-            });
-          });
+          newProject
+            .save()
+            .then(project => res.json(project))
+            .catch(err => res.status(404).json(err));
         }
       });
     }
+  }
+);
+
+// @route   POST api/project/update
+// @desc    Updates project
+// @access  Private
+router.post(
+  "/update",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Project.findByIdAndUpdate({ _id: req.project.id }).then(
+      async updatedProject => {
+        Project.findById({ _id: req.project.id }).then(project => {
+          if (!project) {
+            errors.cannotupdate = "Cannot update project";
+            return res.status(400).json(errors);
+          } else {
+            await updatedProject
+              .save()
+              .then(updatedProject => res.json(updatedProject));
+          }
+        });
+      }
+    );
+  }
+);
+// @route   DELETE api/project/delete
+// @desc    Delete a project
+// @access  Private
+router.delete(
+  "/delete",
+  passport.authenticate("jwt", { session: false }),
+  (res, req) => {
+    const errors = {};
+
+    Project.findOneAndRemove({ _id: req.project.id }).then(async () => {
+      await res.json({ success: "Project successfully deleted" });
+    });
   }
 );
 

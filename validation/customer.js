@@ -4,8 +4,8 @@ const isEmpty = require("./is-empty");
 module.exports = function validateCustomerInput(data) {
   let errors = {};
 
-  data.first_name = !isEmpty(data.first_name) ? data.first_name : "";
-  data.last_name = !isEmpty(data.last_name) ? data.last_name : "";
+  data.firstname = !isEmpty(data.firstname) ? data.firstname : "";
+  data.lastname = !isEmpty(data.lastname) ? data.lastname : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.address1 = !isEmpty(data.address1) ? data.address1 : "";
   data.address2 = !isEmpty(data.address2) ? data.address2 : "";
@@ -14,11 +14,11 @@ module.exports = function validateCustomerInput(data) {
   data.zip = !isEmpty(data.zip) ? data.zip : "";
 
   if (Validator.isEmpty(data.first_name)) {
-    errors.first_name = "First name field is required";
+    errors.firstname = "First name field is required";
   }
 
   if (Validator.isEmpty(data.last_name)) {
-    errors.last_name = "Last name field is required";
+    errors.lastname = "Last name field is required";
   }
 
   if (Validator.isEmpty(data.email)) {

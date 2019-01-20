@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "users",
-    default: null
+    ref: "users"
   },
 
   name: {
@@ -39,7 +38,7 @@ const ProjectSchema = new Schema({
     },
 
     other: {
-      type: Boolean
+      type: String
     }
   },
 
@@ -51,12 +50,6 @@ const ProjectSchema = new Schema({
   workorder: {
     type: Number,
     required: true
-  },
-
-  customer: {
-    type: Schema.Types.ObjectId,
-    ref: "customer",
-    default: null
   },
 
   projectstartdate: {

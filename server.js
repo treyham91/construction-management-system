@@ -15,11 +15,11 @@ const app = express();
 app.use(bodyparser.urlencoded({ extend: false }));
 app.use(bodyparser.json());
 
-const db = require("./config/keys").mongoURI;
+const db = require("./config/keys").devmongoURI;
 
 // Create our MongoDB connection
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 

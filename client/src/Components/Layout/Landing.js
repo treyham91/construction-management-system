@@ -18,17 +18,17 @@ export default class Landing extends Component {
   render() {
     return (
       <div>
-        <section class="jumbotron text-center">
-          <div class="container">
-            <h1 class="jumbotron-heading">CMS Pro</h1>
-            <p class="lead text-muted">
+        <section className="jumbotron text-center">
+          <div className="container">
+            <h1 className="jumbotron-heading">CMS Pro</h1>
+            <p className="lead text-muted">
               Built by construction workers for construction companies.
             </p>
             <p>
-              <Link class="btn btn-secondary my-2" to="/">
+              <Link className="btn btn-secondary my-2" to="/">
                 About Us
               </Link>
-              <Link class="btn btn-secondary my-2" to="/">
+              <Link className="btn btn-secondary my-2" to="/">
                 Learn More
               </Link>
             </p>

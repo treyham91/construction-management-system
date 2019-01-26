@@ -96,22 +96,25 @@ router.post(
   (req, res) => {
     const errors = {};
 
-    Project.findByIdAndUpdate({ _id: req.project.id }).then(
-      async updatedProject => {
-        Project.findById({ _id: req.project.id }).then(project => {
-          if (!project) {
-            errors.cannotupdate = "Cannot update project";
-            return res.status(400).json(errors);
-          } else {
-            await updatedProject
-              .save()
-              .then(updatedProject => res.json(updatedProject));
-          }
-        });
-      }
-    );
-  }
-);
+    Project.findById({ project: req.project.workorder }).then(
+      project => {
+        if (!project) {
+          errors.cannotupdate = "Cannot update project. Invalid Work order number.";
+          return res.status(400).json(errors);
+        } else {
+          Project.findByIdAndUpdate(
+            { project: req.project.workorder },
+            { new: true },
+            { upsert: true },
+            { fields: req.body }).then(updatedProject => {
+              updatedProject
+                .save()
+                .then(updatedProject => res.json(updatedProject));
+            });
+        }
+      });
+  });
+
 // @route   DELETE api/project/delete
 // @desc    Delete a project
 // @access  Private
@@ -121,8 +124,8 @@ router.delete(
   (res, req) => {
     const errors = {};
 
-    Project.findOneAndRemove({ _id: req.project.id }).then(async () => {
-      await res.json({ success: "Project successfully deleted" });
+    Project.findOneAndRemove({ _id: req.project.id }).then(() => {
+      res.json({ success: "Project successfully deleted" });
     });
   }
 );
